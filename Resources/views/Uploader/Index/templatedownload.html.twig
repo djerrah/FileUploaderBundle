@@ -1,0 +1,71 @@
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+<tr class="template-download fade">
+    <td>
+         <span class="preview">
+             {% if (file.thumbnailUrl) { %}
+
+             {% if (file.type == 'mp4') { %}
+
+             <video src="{%=file.url%}" controls="" poster=""></video>
+
+             {% } else if(file.type == 'mp3' || file.type == 'm4a') { %}
+
+                        <audio width="250px" id="player_audio" controls="">
+                            <source id="player_audio_mp3" src="{%=file.url%}" type="audio/mpeg">
+                        </audio>
+
+             {% } else { %}
+
+                     <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery>
+                         <img src="{%=file.thumbnailUrl%}">
+                     </a>
+
+             {% } %}
+
+             {% } %}
+            </span>
+
+    </td>
+    <td>
+        <p class="name">
+            {% if (file.url) { %}
+            <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=
+            file.name%}</a>
+            {% } else { %}
+            <span>{%=file.name%}</span>
+            {% } %}
+
+            {% if (file.voirVideoUrl) { %}
+                <a href="{%=file.voirVideoUrl%}" target="_blank">Voir</a>
+            {% } %}
+        </p>
+        {% if (file.error) { %}
+        <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+        {% } %}
+    </td>
+
+    <td>
+        <p class="description">
+            {%= file.description %}
+
+        </p>
+    </td>
+
+    <td>
+        <p>
+            <a href="{%= file.youtubePartageUrl %}" >
+                <img src="/bundles/reseauxsociaux/images/Youtube.png" width="40px;" title="Pargtager sur Youtube">
+            </a>
+
+            <a name="fb_share"  type="button" share_url="{%= file.partageFaxebook %}" ></a>
+
+        </p>
+
+    </td>
+    <td>
+        <span class="size">{%=o.formatFileSize(file.size)%}</span>
+    </td>
+</tr>
+
+{% } %}
+<!--script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script-->

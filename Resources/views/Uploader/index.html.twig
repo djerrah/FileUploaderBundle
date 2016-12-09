@@ -1,0 +1,192 @@
+{% extends '::base.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <!-- Generic page styles -->
+    <link rel="stylesheet" href="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/css/style.css') }}"
+          type="text/css" media="all"/>
+
+    <!-- blueimp Gallery styles -->
+    <link rel="stylesheet" href="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/css/blueimp-gallery.min.css') }}"
+          type="text/css" media="all"/>
+
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <link rel="stylesheet" href="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/css/jquery.fileupload.css') }}"
+          type="text/css" media="all"/>
+
+    <link rel="stylesheet" href="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/css/jquery.fileupload-ui.css') }}"
+          type="text/css" media="all"/>
+    <!-- CSS adjustments for browsers with JavaScript disabled -->
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/css/jquery.fileupload-noscript.css') }}"
+              type="text/css" media="all"/>
+    </noscript>
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/css/jquery.fileupload-ui-noscript.css') }}"
+              type="text/css" media="all"/>
+    </noscript>
+
+{% endblock %}
+
+{% block mystylesheets %}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/url/jquery.min.js') }}" type="text/javascript"></script>
+
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/js/jquery.ui.widget.js') }}" type="text/javascript"></script>
+
+
+    <!-- The Templates plugin is included to render the upload/download listings -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/url/tmpl.min.js') }}" type="text/javascript"></script>
+
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/url/load-image.min.js') }}" type="text/javascript"></script>
+
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/url/canvas-to-blob.min.js') }}" type="text/javascript"></script>
+
+    <!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/url/bootstrap.min.js') }}" type="text/javascript"></script>
+
+    <!-- blueimp Gallery script -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/url/jquery.blueimp-gallery.min.js') }}" type="text/javascript"></script>
+
+
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.iframe-transport.js') }}" type="text/javascript"></script>
+
+    <!-- The basic File Upload plugin -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.fileupload.js') }}" type="text/javascript"></script>
+
+    <!-- The File Upload processing plugin -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.fileupload-process.js') }}" type="text/javascript"></script>
+
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.fileupload-image.js') }}" type="text/javascript"></script>
+
+    <!-- The File Upload audio preview plugin -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.fileupload-audio.js') }}" type="text/javascript"></script>
+
+    <!-- The File Upload video preview plugin -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.fileupload-video.js') }}" type="text/javascript"></script>
+
+    <!-- The File Upload validation plugin -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.fileupload-validate.js') }}" type="text/javascript"></script>
+
+    <!-- The File Upload user interface plugin -->
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/jquery.fileupload-ui.js') }}" type="text/javascript"></script>
+
+
+    <!-- The main application script -->
+    <!--script src="js/main.js"></script-->
+
+    <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+    <!--[if (gte IE 8)&(lt IE 10)]>
+    <script src="{{ asset('/bundles/djerrahfileuploader/jqueryuploader/js/cors/jquery.xdr-transport.js') }}" type="text/javascript"></script>
+
+    <![endif]-->
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var url = '{{ url('uploader_upload_php', { folder: folder, id: object.id}) }}';
+
+            $(function () {
+                'use strict';
+
+                // Initialize the jQuery File Upload widget:
+                $('#fileupload').fileupload({
+                    // Uncomment the following to send cross-domain cookies:
+                    //xhrFields: {withCredentials: true},
+                    url: url
+                });
+
+                // Enable iframe cross-domain access via redirect option:
+                $('#fileupload').fileupload(
+                        'option',
+                        'redirect',
+                        window.location.href.replace(
+                                /\/[^\/]*$/,
+                                '/cors/result.html?%s'
+                        )
+                );
+
+                    // Load existing files:
+                    $('#fileupload').addClass('fileupload-processing');
+                    $.ajax({
+                        // Uncomment the following to send cross-domain cookies:
+                        //xhrFields: {withCredentials: true},
+                        url: $('#fileupload').fileupload('option', 'url'),
+                        dataType: 'json',
+                        context: $('#fileupload')[0]
+                    }).always(function () {
+                        $(this).removeClass('fileupload-processing');
+                    }).done(function (result) {
+                        $(this).fileupload('option', 'done')
+                                .call(this, $.Event('done'), {result: result});
+
+                    });
+
+            });
+
+        });
+    </script>
+
+{% endblock %}
+
+ {% block myjavascripts %}{% endblock %}
+
+{% block title %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="uploader" style="">
+        <h1>File Uploader</h1>
+        <ul class="nav nav-tabs">
+            <li class="{% if folder== 'videos'%} active {% endif %}"><a href="{{ url('uploader_upload_index', {'folder': 'videos' }) }}"><span class="glyphicon glyphicon-facetime-video"></span></a></li>
+            <li class="{% if folder== 'pictures'%} active {% endif %}"><a href="{{ url('uploader_upload_index', {'folder': 'pictures' }) }}"><span class="glyphicon glyphicon-camera"></span></a></li>
+            <li class="{% if folder== 'docs'%} active {% endif %}"><a href="{{ url('uploader_upload_index', {'folder': 'docs' }) }}"><span class="glyphicon glyphicon-file"></span></a></li>
+            <li class="{% if folder== 'music'%} active {% endif %}"><a href="{{ url('uploader_upload_index', {'folder': 'music' }) }}"><span class="glyphicon glyphicon-headphones"></span></a></li>
+        </ul>
+        <br>
+        <!-- The file upload form used as target for the file upload widget -->
+        <form id="fileupload" action="" method="POST" enctype="multipart/form-data">
+            <!-- Redirect browsers with JavaScript disabled to the origin page -->
+            <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
+
+            <!-- The table listing the files available for upload/download -->
+            <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+        </form>
+        <br>
+
+    </div>
+    {% if folder== 'pictures'%}
+    <!-- The blueimp Gallery widget -->
+    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+        {% endif %}
+
+    <script id="template-upload" type="text/x-tmpl">
+    </script>
+    <!-- The template to display files available for download -->
+    <script id="template-download" type="text/x-tmpl">
+        {% autoescape false %}
+        {{ templatedownload }}
+        {% endautoescape %}
+    </script>
+
+{% endblock %}

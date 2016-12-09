@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/bundles/djerrahfileuploader/css/video-js.css') }}" type="text/css"
+          media="all"/>
+
+{% endblock stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/bundles/djerrahfileuploader/js/video.js') }}" type="text/javascript"></script>
+
+{% endblock javascripts %}
+
+
+{% block title 'Dépenses' %}
+
+{% block body %}
+
+    <div class="block_video clearfix">
+        <h2 class="title_video">{{ video.name }}</h2>
+        <!--link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+        <script src="http://vjs.zencdn.net/c/video.js"></script-->
+        <div class="video_vimeo">
+
+            <!--video width="320" height="240" controls="controls" data="/player_flv.swf">
+            <source src="/{{ video.url }}" data="/player_flv.swf"/>
+            Your browser does not support the video tag.
+        </video-->
+            <object>
+                <video id="video1" class="video-js vjs-default-skin" width="640" height="480"
+                       data-setup='{"controls" : true, "autoplay" : true, "preload" : "auto"}'>
+                    <source src="{{ video.url }}" type="{{ video.type }}">
+                </video>
+            </object>
+            <!--object type="application/x-shockwave-flash" data="/player_flv.swf" width="400" height="300">
+            <param name="movie" value="/player_flv.swf" />
+            <param name="allowFullScreen" value="true" />
+            <param name="FlashVars" value="flv={{ video.url }}" /-->
+            </object>
+
+        </div>
+
+
+    </div>
+{% endblock body %}
+
