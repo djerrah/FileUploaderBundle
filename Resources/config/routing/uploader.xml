@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route
+            id="uploader_upload_index"
+            path="/view/{folder}"
+            methods="GET">
+        <default key="_controller">DjerrahFileUploaderBundle:Uploader:index</default>
+        <requirement key="folder">videos|pictures|docs|music</requirement>
+        <default key="folder">pictures</default>
+    </route>
+
+    <route
+            id="uploader_upload"
+            path="/folders/{folder}"
+            methods="GET|POST|DELETE|OPTION">
+        <default key="_controller">DjerrahFileUploaderBundle:Uploader:uploader</default>
+        <requirement key="folder">videos|pictures|docs|music</requirement>
+        <default key="folder">pictures</default>
+    </route>
+
+    <route
+            id="uploader_lecteur_audio"
+            path="/lecteur_audio"
+            methods="GET">
+        <default key="_controller">DjerrahFileUploaderBundle:Uploader:audio</default>
+    </route>
+
+    <route
+            id="uploader_lecteur_video"
+            path="/lecteur_video-{slug}"
+            methods="GET POST">
+        <default key="_controller">DjerrahFileUploaderBundle:Uploader:video</default>
+    </route>
+
+    <route
+            id="uploader_upload_php"
+            path="/{folder}/{id}/upload"
+            methods="GET POST DELETE">
+        <default key="_controller">DjerrahFileUploaderBundle:Uploader:upload</default>
+    </route>
+
+</routes>
